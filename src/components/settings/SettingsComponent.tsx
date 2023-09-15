@@ -1,6 +1,5 @@
-import React from "react";
-import { useState, useEffect, useRef, useContext } from "react";
-import { PlayerContext } from "../../AppComponent";
+import { useContext } from "react";
+import { PlayerContext } from "../../AppContainer";
 import {
   Wrapper,
   Container,
@@ -14,7 +13,7 @@ import {
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-function Settings() {
+function SettingsComponent() {
   const values = useContext(PlayerContext);
 
   const {
@@ -66,4 +65,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default SettingsComponent;

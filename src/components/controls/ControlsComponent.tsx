@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useContext } from "react";
 import {
   ButtonsBox,
   ControlsBox,
@@ -23,7 +22,7 @@ import {
 
 import { AiOutlineSetting } from "react-icons/ai";
 
-import { PlayerContext } from "../../AppComponent";
+import { PlayerContext } from "../../AppContainer";
 import {
   BsFillVolumeMuteFill,
   BsFillVolumeDownFill,
@@ -34,7 +33,10 @@ import {
   BsFullscreenExit,
 } from "react-icons/bs";
 
-function Controls() {
+function ControlsComponent(props: {
+  updateVolume: () => void;
+  muteVolume: () => void;
+}) {
   const values = useContext(PlayerContext);
 
   const {
@@ -65,29 +67,6 @@ function Controls() {
     controlsBoxRef,
     setIsMouseInControl,
   } = values;
-
-  // Set video volume on volume input onchange event
-  const updateVolume = () => {
-    if (videoRef.current && volumeRef.current) {
-      videoRef.current.volume = Number(volumeRef.current.value) / 100;
-      setVolumeValue(videoRef.current.volume);
-    }
-  };
-  // Mute/unmute actions on volume icon onclick event
-  const muteVolume = () => {
-    if (videoRef.current && volumeRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-
-      if (videoRef.current.muted) {
-        volumeRef.current.setAttribute("data-volume", volumeRef.current.value);
-        volumeRef.current.value = "0";
-        setVolumeValue(Number(volumeRef.current.value));
-      } else {
-        volumeRef.current.value = String(volumeRef.current.dataset.volume);
-        setVolumeValue(Number(volumeRef.current.value));
-      }
-    }
-  };
 
   return (
     <ControlsBox
@@ -133,7 +112,7 @@ function Controls() {
       {/* Buttons' box */}
       <ButtonsBox>
         <VolumeBox>
-          <VolumeImgBox onClick={muteVolume}>
+          <VolumeImgBox onClick={props.muteVolume}>
             {volumeValue <= 0 ? (
               <BsFillVolumeMuteFill
                 style={{ fill: "#FFF", fontSize: "30px" }}
@@ -146,7 +125,11 @@ function Controls() {
               <BsFillVolumeUpFill style={{ fill: "#FFF", fontSize: "30px" }} />
             )}
           </VolumeImgBox>
-          <VolumeInput type="range" ref={volumeRef} onChange={updateVolume} />
+          <VolumeInput
+            type="range"
+            ref={volumeRef}
+            onChange={props.updateVolume}
+          />
 
           <TimeBox>
             <CurrentTimeBox>
@@ -202,4 +185,4 @@ function Controls() {
   );
 }
 
-export default Controls;
+export default ControlsComponent;

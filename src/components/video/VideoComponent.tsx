@@ -1,18 +1,17 @@
-import React from "react";
-import { useState, useEffect, useRef, createContext, useContext } from "react";
-import { PlayerContext } from "../../AppComponent";
-import Controls from "../controls/Controls";
-import Settings from "../settings/Settings";
+import { useContext } from "react";
+import { PlayerContext } from "../../AppContainer";
+import ControlsContainer from "../controls/ControlsContainer";
+import SettingsComponent from "../settings/SettingsComponent";
 import { VideoBox, VideoElem } from "./video-styles";
 
-function Video() {
+function VideoComponent() {
   const values = useContext(PlayerContext);
 
   const { videoRef, videoContainerRef, videoUrl } = values;
 
   return (
     <VideoBox ref={videoContainerRef}>
-      <Settings />
+      <SettingsComponent />
       <VideoElem
         onClick={() => {
           if (videoRef.current?.paused) {
@@ -25,9 +24,9 @@ function Video() {
         src={videoUrl}
         controls={false}
       ></VideoElem>
-      <Controls></Controls>
+      <ControlsContainer></ControlsContainer>
     </VideoBox>
   );
 }
 
-export default Video;
+export default VideoComponent;
